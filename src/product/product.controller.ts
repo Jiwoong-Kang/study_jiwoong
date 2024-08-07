@@ -16,12 +16,12 @@ export class ProductController {
 
   @Get('/all')
   async getAllProducts() {
-    return await this.productService.getProducts;
+    return await this.productService.getProducts();
   }
 
   @Post('/create')
-  async registerProduct() {
-    return await this.productService.postProduct;
+  async registerProduct(@Body() createProductDto: CreateProductDto) {
+    return await this.productService.postProduct(createProductDto);
   }
 
   @Get('/:id')
@@ -31,7 +31,7 @@ export class ProductController {
 
   @Delete('/delete')
   async deleteAllProducts() {
-    return await this.productService.deleteProducts;
+    return await this.productService.deleteProducts();
   }
 
   @Delete('/:id')
