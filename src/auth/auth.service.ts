@@ -5,6 +5,7 @@ import { LoginUserDto } from '../user/dto/login-user.dto';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { PostgresErrorCodes } from '../database/postgresErrorCodes.enum';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,25 @@ export class AuthService {
   ) {}
 
   async signupUser(createUserDto: CreateUserDto) {
-    return await this.userService.createUser(createUserDto);
+    try {
+      return await this.userService.createUser(createUserDto);
+    } catch (error) {
+      if (error?.code === PostgresErrorCodes.unique_validation) {
+        throw new HttpException(
+          'This email already exists',
+          HttpStatus.BAD_REQUEST,
+        );
+      } else if (error?.code === PostgresErrorCodes.not_null_violation) {
+        throw new HttpException(
+          'please check not null body value',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      throw new HttpException(
+        'Unexpected Error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async loginUser(loginUserDto: LoginUserDto) {

@@ -1,6 +1,8 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { setupSwagger } from './config/swagger.document';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -8,7 +10,16 @@ async function bootstrap() {
   const configService: ConfigService = app.get(ConfigService);
 
   app.setGlobalPrefix('api');
+  app.useGlobalPipes(
+    new ValidationPipe({
+      skipMissingProperties: true,
+      transform: true,
+    }),
+  );
 
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+
+  setupSwagger(app);
   const port = configService.get('SERVER_PORT') ?? 7000;
   await app.listen(port);
 }
