@@ -7,3 +7,12 @@ services:
       - docker.env
     ports:
       - '5438:5432'
+
+  study_redis:
+    container_name: study_redis
+    image: redis:alpine
+    restart: always
+    env_file:
+      - docker.env
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}

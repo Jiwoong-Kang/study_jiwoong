@@ -5,6 +5,7 @@ export const setupSwagger = (app: INestApplication) => {
   const config = new DocumentBuilder()
     .setTitle('Group of jiwoongApi')
     .setDescription('Create a new JiwoongApi document')
+    .addBearerAuth()
     .setVersion('1.0')
     .addTag('Jiwoong')
     .build();

@@ -7,6 +7,8 @@ import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { EmailModule } from './email/email.module';
+import { RedisModule } from './redis/redis.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -21,6 +23,17 @@ import * as Joi from '@hapi/joi';
         POSTGRES_DB: Joi.string().required(),
         ACCESS_TOKEN_SECRET: Joi.string().required(),
         ACCESS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        EMAIL_SERVICE: Joi.string().required(),
+        EMAIL_USER: Joi.string().required(),
+        EMAIL_PASSWORD: Joi.string().required(),
+        FIND_PASSWORD_TOKEN_SECRET: Joi.string().required(),
+        FIND_PASSWORD_EXPIRATION_TIME: Joi.string().required(),
+        EMAIL_BASE_URL: Joi.string().required(),
+        REDIS_HOST: Joi.string().required(),
+        REDIS_PORT: Joi.number().required(),
+        REDIS_USER: Joi.string().required(),
+        REDIS_PASSWORD: Joi.string().required(),
+        REDIS_TTL: Joi.string().required(),
       }),
     }),
     DatabaseModule,
@@ -28,6 +41,8 @@ import * as Joi from '@hapi/joi';
     OrderModule,
     UserModule,
     AuthModule,
+    EmailModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],
