@@ -107,6 +107,7 @@ export class AuthService {
       subject: 'Jiwoong - Verification Email Address',
       html: signupEmail(generateNumber),
     });
+    return 'Please check your email';
   }
 
   generateOTP() {
